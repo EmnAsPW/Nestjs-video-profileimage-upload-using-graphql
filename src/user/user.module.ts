@@ -21,7 +21,6 @@ import { FindSchema, UserVideo } from './entities/uservideo.entity';
     }),
     //SharedModule,
   ],
-  // make sure the UserService is exported so that it's not longer private
   exports: [UserService],
 })
 export class UserModule {}

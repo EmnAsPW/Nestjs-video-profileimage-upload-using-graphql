@@ -5,7 +5,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { VideoModule } from './video/video.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
-
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { join } from 'path';
 import { UserModule } from './user/user.module';

@@ -4,8 +4,16 @@ import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 //import { CreateUserInput } from './create-user.input';
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
 @InputType()
-export class updateVideoDto  {
-    @Field(() => GraphQLUpload, { nullable: true })
-    video?: FileUpload | string;
+export class updateVideoDto {
+  @Field(() => String, { nullable: true })
+  title: string;
 
+  @Field(() => String, { nullable: true })
+  description: string;
+
+  @Field(() => [String], { nullable: true })
+  tags: string[];
+
+  @Field(() => GraphQLUpload, { nullable: true })
+  video?: FileUpload | string;
 }

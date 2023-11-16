@@ -14,11 +14,11 @@ export class UserVideo {
   @Field(() => String)
   email: string;
 
-  @Field(() => String)
-  password: string;
+  // @Field(() => String)
+  // password: string;
 
-  @Field(() => String)
-  confirmPassword: string;
+  // @Field(() => String)
+  // confirmPassword: string;
 
   @Field(() => String, { nullable: true })
   @Prop({ type: String })

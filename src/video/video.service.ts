@@ -98,32 +98,4 @@ export class VideoService {
       throw new NotFoundException('Video Not Found');
     }
   }
-
-  async updateOneVideoInfo(
-    _id: string,
-    fieldToUpdate: string,
-    newValue: string,
-  ) {
-    try {
-      const video = await this.videoModel.findById(_id).exec();
-
-      if (!video) {
-        return 'Video Not Found';
-      }
-
-      if (video[fieldToUpdate] !== undefined) {
-        const updateQuery = { [fieldToUpdate]: newValue };
-
-        const updatedVideo = await this.videoModel
-          .findByIdAndUpdate(_id, updateQuery, { new: true })
-          .exec();
-
-        return `Successfully updated ${fieldToUpdate} in Video. New value: ${updatedVideo[fieldToUpdate]}`;
-      } else {
-        return `${fieldToUpdate} not found in Video`;
-      }
-    } catch (error) {
-      throw new NotFoundException('Video Not Found');
-    }
-  }
 }

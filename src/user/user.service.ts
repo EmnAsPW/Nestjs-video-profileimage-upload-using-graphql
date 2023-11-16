@@ -4,14 +4,11 @@ import { Model, Types, UpdateQuery } from 'mongoose';
 import { User, UserDetails, UserDocument } from './entities/user.entity';
 import { updateUserInput } from './dto/update-user.input';
 import { NotFoundException } from '@nestjs/common';
-import { UserVideo } from './entities/Uservideo.entity';
 import { CreateUserInput } from './dto/create-user.input';
-//import { Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  // updateuser: any;
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
@@ -40,19 +37,11 @@ export class UserService {
     ]);
     console.log('............', userWithVideos);
     return userWithVideos[0];
-    // if (userWithVideos.length === 0) {
-    //   return null;
-    // }
-    // return this.userModel.findById(userWithVideos[0]);
   }
 
   async findOneByEmail(email: string) {
     return this.userModel.findOne({ email });
   }
-
-  // async findByEmail(email: string): Promise<UserDocument | null> {
-  //   return this.userModel.findOne({ email }).exec();
-  // }
 
   async findById(id: string): Promise<UserDetails | null> {
     const user = await this.userModel.findById(id).exec();

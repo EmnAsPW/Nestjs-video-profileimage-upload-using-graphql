@@ -39,8 +39,6 @@ type UserVideo {
   _id: ID!
   username: String
   email: String!
-  password: String!
-  confirmPassword: String!
   Address: String
   Age: Float
   Bio: String
@@ -65,7 +63,6 @@ type Mutation {
   updateVideo(_id: String!, updateVideoDto: updateVideoDto!): Video!
   deleteVideo(_id: String!): Video!
   deleteOneVideoInfo(userId: String!, fieldToDelete: String!): String!
-  updateOneVideoInfo(userId: String!, fieldToUpdate: String!, newValue: String!): String!
   updateUser(_id: String!, updateUserInput: updateUserInput!): User!
   deleteUser(_id: String!): User!
   deleteOneUserInfo(userId: String!, fieldToDelete: String!): String!
@@ -84,6 +81,9 @@ input CreateVideoDto {
 scalar Upload
 
 input updateVideoDto {
+  title: String
+  description: String
+  tags: [String!]
   video: Upload
 }
 

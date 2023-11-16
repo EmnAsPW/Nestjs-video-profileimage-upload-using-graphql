@@ -5,8 +5,6 @@ import { GraphQLUpload } from 'graphql-upload';
 import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.input';
 import { join, normalize } from 'path';
-// import path from 'path';
-// import * as fs from 'fs';
 import { updateVideoDto } from './dto/update-video.input';
 import { Video } from './entities/video.entity';
 import { UseGuards } from '@nestjs/common';
@@ -43,31 +41,44 @@ export class VideoResolver {
     @Args('_id') _id: string,
     @Args('updateVideoDto') updateVideoDto: updateVideoDto,
   ): Promise<Video> {
-    const { video } = updateVideoDto;
+    const { title, description, tags, video } = updateVideoDto;
     //console.log(image);
-    const { filename, mimetype, encoding, createReadStream } = await video;
+    // const { filename, mimetype, encoding, createReadStream } = await video;
     //console.log(filename, mimetype, encoding, createReadStream);
 
-    if (mimetype !== 'video/mp4' && mimetype !== 'application/octet-stream') {
-      throw new Error('Only MP4 video files are allowed.');
-    }
+    if (video) {
+      const { filename, mimetype, encoding, createReadStream } = await video;
 
-    const ReadStream = createReadStream();
-    console.log(__dirname);
-    const newFilename = `${Date.now()}-${filename}`;
-    let savePath = join(__dirname, '..', '..', 'upload', newFilename);
-    console.log(savePath);
-    const writeStream = await createWriteStream(savePath);
-    await ReadStream.pipe(writeStream);
-    const baseUrl = process.env.BASE_URL;
-    const port = process.env.PORT;
-    savePath = `${baseUrl}${port}\\${newFilename}`;
-    return await this.videoService.updateVideo(_id, {
-      // title,
-      // description,
-      // tags,
-      video: savePath,
-    });
+      if (mimetype !== 'video/mp4' && mimetype !== 'application/octet-stream') {
+        throw new Error('Only MP4 video files are allowed.');
+      }
+
+      const ReadStream = createReadStream();
+      console.log(__dirname);
+      const newFilename = `${Date.now()}-${filename}`;
+      let savePath = join(__dirname, '..', '..', 'upload', newFilename);
+      console.log(savePath);
+      const writeStream = await createWriteStream(savePath);
+      await ReadStream.pipe(writeStream);
+      const baseUrl = process.env.BASE_URL;
+      const port = process.env.PORT;
+      savePath = `${baseUrl}${port}\\${newFilename}`;
+
+      // Update the video path in the database
+      return await this.videoService.updateVideo(_id, {
+        title,
+        description,
+        tags,
+        video: savePath,
+      });
+    } else {
+      // If video is not provided, update other fields only
+      return await this.videoService.updateVideo(_id, {
+        title,
+        description,
+        tags,
+      });
+    }
   }
 
   @Mutation(() => Video, { name: 'deleteVideo' })
@@ -89,25 +100,6 @@ export class VideoResolver {
     } catch (error) {
       console.log(error);
       throw new Error('Failed to delete field');
-    }
-  }
-
-  @Mutation(() => String, { name: 'updateOneVideoInfo' })
-  async updateOneField(
-    @Args('userId', { type: () => String }) _id: string,
-    @Args('fieldToUpdate') fieldToUpdate: string,
-    @Args('newValue') newValue: string,
-  ) {
-    try {
-      const result = await this.videoService.updateOneVideoInfo(
-        _id,
-        fieldToUpdate,
-        newValue,
-      );
-      return result;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Failed to update field');
     }
   }
 }
