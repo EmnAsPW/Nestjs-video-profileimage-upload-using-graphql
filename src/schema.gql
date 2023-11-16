@@ -1,0 +1,111 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Video {
+  _id: String
+  title: String
+  description: String
+  tags: [String!]
+  video: String
+  userId: String!
+}
+
+type User {
+  _id: ID!
+  Username: String
+  email: String!
+  password: String!
+  confirmPassword: String!
+  Address: String
+  Age: String
+  Bio: String
+  image: String
+}
+
+type UserFile {
+  _id: String!
+  Username: String!
+  email: String!
+}
+
+type UserDetails {
+  _id: String!
+  Username: String!
+  email: String!
+}
+
+type UserVideo {
+  _id: ID!
+  username: String
+  email: String!
+  password: String!
+  confirmPassword: String!
+  Address: String
+  Age: Float
+  Bio: String
+  image: String
+  videos: [Video!]
+}
+
+type LoginUserResponse {
+  user: UserFile!
+  authToken: String!
+}
+
+type Query {
+  getAllvideos: [Video!]!
+  getvideobytitle(data: String!): [Video!]!
+  getUser(id: String!): UserDetails!
+  getUserwithvideo(id: String!): UserVideo!
+}
+
+type Mutation {
+  createVideo(createVideoDto: CreateVideoDto!): Video!
+  updateVideo(_id: String!, updateVideoDto: updateVideoDto!): Video!
+  deleteVideo(_id: String!): Video!
+  deleteOneVideoInfo(userId: String!, fieldToDelete: String!): String!
+  updateOneVideoInfo(userId: String!, fieldToUpdate: String!, newValue: String!): String!
+  updateUser(_id: String!, updateUserInput: updateUserInput!): User!
+  deleteUser(_id: String!): User!
+  deleteOneUserInfo(userId: String!, fieldToDelete: String!): String!
+  Login(loginUserInput: LoginUserInput!): LoginUserResponse!
+  signup(signupInput: CreateUserInput!): UserDetails!
+}
+
+input CreateVideoDto {
+  title: String
+  description: String
+  tags: [String!]
+  video: Upload
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input updateVideoDto {
+  video: Upload
+}
+
+input updateUserInput {
+  Username: String
+  email: String
+  password: String
+  confirmPassword: String
+  Address: String
+  Age: Float
+  Bio: String
+  image: Upload
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  Username: String!
+  email: String!
+  password: String!
+  confirmPassword: String!
+}
