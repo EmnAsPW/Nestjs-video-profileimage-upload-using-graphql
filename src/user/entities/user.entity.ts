@@ -48,40 +48,6 @@ export class User {
   image?: string;
 }
 
-// @ObjectType()
-// @Schema()
-// export class userWithVideos {
-//   @Field(() => ID)
-//   // @Prop(() => String)  //No need Always
-//   _id?: string;
-
-//   @Field(() => String, { nullable: true })
-//   @Prop({ required: true })
-//   username: string;
-
-//   @Field(() => String)
-//   @Prop({ required: true, unique: true })
-//   email: string;
-
-//   @Field(() => String, { nullable: true })
-//   @Prop({ type: String })
-//   Address: string;
-
-//   @Field(() => String, { nullable: true })
-//   @Prop({ type: String })
-//   Age: number;
-
-//   @Field(() => String, { nullable: true })
-//   @Prop({ type: String })
-//   Bio: string;
-
-//   @Field(() => String, { nullable: true })
-//   @Prop({ type: String })
-//   image?: string;
-// }
-
-//export const UserSchema = SchemaFactory.createForClass(User);
-
 @ObjectType()
 @Schema()
 export class UserFile {
@@ -104,7 +70,6 @@ export class UserDetails {
   @Field(() => String)
   _id: string;
 
-  // Add user properties
   @Field(() => String)
   @Prop()
   Username: string;

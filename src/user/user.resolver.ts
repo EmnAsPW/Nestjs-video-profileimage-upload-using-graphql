@@ -100,6 +100,7 @@ export class UserResolver {
   }
 
   @Mutation(() => String, { name: 'deleteOneUserInfo' })
+  @UseGuards(JwtAuthGuard)
   async deleteOneField(
     @Args('userId', { type: () => String }) _id: string,
     @Args('fieldToDelete') fieldToDelete: string,

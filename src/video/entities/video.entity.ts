@@ -29,8 +29,42 @@ export class Video {
   @Prop({ type: String })
   video: string;
 
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String })
+  searchTag: string;
+
   @Field(() => String)
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   userId: mongoose.Types.ObjectId;
 }
 export const VideoSchema = SchemaFactory.createForClass(Video);
+
+@ObjectType()
+@Schema()
+export class VideoSearch {
+  @Field(() => String, { nullable: true })
+  _id?: string;
+
+  // @Field(() => ID)
+  // _id: Types.ObjectId;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String })
+  title: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String })
+  description: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String })
+  video: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: String })
+  searchTag: string;
+
+  @Field(() => String)
+  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  userId: mongoose.Types.ObjectId;
+}

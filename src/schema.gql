@@ -8,6 +8,16 @@ type Video {
   description: String
   tags: [String!]
   video: String
+  searchTag: String
+  userId: String!
+}
+
+type VideoSearch {
+  _id: String
+  title: String
+  description: String
+  video: String
+  searchTag: String
   userId: String!
 }
 
@@ -53,16 +63,20 @@ type LoginUserResponse {
 
 type Query {
   getAllvideos: [Video!]!
-  getvideobytitle(data: String!): [Video!]!
+  getVideoByTitlewithtags(data: VideoInput!): [VideoSearch!]!
   getUser(id: String!): UserDetails!
   getUserwithvideo(id: String!): UserVideo!
+}
+
+input VideoInput {
+  title: String
+  tags: String
 }
 
 type Mutation {
   createVideo(createVideoDto: CreateVideoDto!): Video!
   updateVideo(_id: String!, updateVideoDto: updateVideoDto!): Video!
   deleteVideo(_id: String!): Video!
-  deleteOneVideoInfo(userId: String!, fieldToDelete: String!): String!
   updateUser(_id: String!, updateUserInput: updateUserInput!): User!
   deleteUser(_id: String!): User!
   deleteOneUserInfo(userId: String!, fieldToDelete: String!): String!

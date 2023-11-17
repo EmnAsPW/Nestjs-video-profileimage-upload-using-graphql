@@ -6,11 +6,12 @@ import { VideoService } from './video.service';
 import { CreateVideoDto } from './dto/create-video.input';
 import { join, normalize } from 'path';
 import { updateVideoDto } from './dto/update-video.input';
-import { Video } from './entities/video.entity';
+import { Video, VideoSearch } from './entities/video.entity';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guards';
 import { LoginUser } from 'src/auth/login-user.guards';
 import { LoginUserRES } from './dto/loginuser.input';
+import { VideoInput } from './dto/video.input';
 
 @Resolver(() => Video)
 export class VideoResolver {
@@ -21,9 +22,17 @@ export class VideoResolver {
     return this.videoService.findAllVideos();
   }
 
-  @Query(() => [Video])
-  async getvideobytitle(@Args('data') data: string): Promise<Video[]> {
-    return this.videoService.findVideo(data);
+  // @Query(() => [Video])
+  // async getvideobytitle(@Args('data') data: string): Promise<Video[]> {
+  //   return this.videoService.findVideos(data);
+  // }
+
+  @Query(() => [VideoSearch], { name: 'getVideoByTitlewithtags' })
+  async getVideoByTitlewithtags(
+    @Args('data', { type: () => VideoInput }) data: VideoInput,
+  ): Promise<Video[]> {
+    const { title, tags } = data;
+    return this.videoService.findVideo(title, tags);
   }
 
   @Mutation(() => Video)
@@ -37,6 +46,7 @@ export class VideoResolver {
   }
 
   @Mutation(() => Video, { name: 'updateVideo' })
+  @UseGuards(JwtAuthGuard)
   async updateVideo(
     @Args('_id') _id: string,
     @Args('updateVideoDto') updateVideoDto: updateVideoDto,
@@ -82,24 +92,8 @@ export class VideoResolver {
   }
 
   @Mutation(() => Video, { name: 'deleteVideo' })
+  @UseGuards(JwtAuthGuard)
   async deleteVideo(@Args('_id') _id: string): Promise<Video> {
     return await this.videoService.deleteVideo(_id);
-  }
-
-  @Mutation(() => String, { name: 'deleteOneVideoInfo' })
-  async deleteOneField(
-    @Args('userId', { type: () => String }) _id: string,
-    @Args('fieldToDelete') fieldToDelete: string,
-  ) {
-    try {
-      const result = await this.videoService.deleteOneVideoInfo(
-        _id,
-        fieldToDelete,
-      );
-      return result;
-    } catch (error) {
-      console.log(error);
-      throw new Error('Failed to delete field');
-    }
   }
 }
