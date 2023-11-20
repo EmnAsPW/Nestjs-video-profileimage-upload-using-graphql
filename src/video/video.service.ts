@@ -19,10 +19,10 @@ export class VideoService {
   async createVideo(createVideoDto: CreateVideoDto): Promise<Video> {
     const { title, description, tags, video, userId } = createVideoDto;
     //createVideoDto.userId="lskdfjaslk";
-    console.log('...........', userId);
+    //console.log('...........', userId);
     const resp = await video;
     const { filename, mimetype, encoding, createReadStream } = resp;
-    console.log(filename, mimetype, encoding, createReadStream);
+    //console.log(filename, mimetype, encoding, createReadStream);
 
     if (mimetype !== 'video/mp4' && mimetype !== 'application/octet-stream') {
       throw new Error('Only MP4 video files are allowed.');

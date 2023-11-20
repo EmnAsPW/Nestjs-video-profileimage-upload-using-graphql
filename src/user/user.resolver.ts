@@ -69,6 +69,10 @@ export class UserResolver {
       Age,
       Bio,
     };
+
+    // if (email) {
+    //   updatedFields.email = email;
+    // }
     // Here I'm checking if the image is provided in the updateUserInput
     if (image) {
       const { filename, mimetype, encoding, createReadStream } = await image;

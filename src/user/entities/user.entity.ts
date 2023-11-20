@@ -10,7 +10,7 @@ import { Document, Types } from 'mongoose';
 @ObjectType()
 @Schema()
 export class User {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   // @Prop(() => String)  //No need Always
   _id?: string;
 
@@ -18,16 +18,16 @@ export class User {
   @Prop({ required: true })
   Username: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({ required: true, unique: true })
   @IsEmail()
   email: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({ required: true })
   password: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({ required: true })
   confirmPassword: string;
 
@@ -51,15 +51,15 @@ export class User {
 @ObjectType()
 @Schema()
 export class UserFile {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   _id: string;
 
   // Add user properties
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
   Username: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({ unique: true })
   email: string;
 }
@@ -67,54 +67,26 @@ export class UserFile {
 @ObjectType()
 @Schema()
 export class UserDetails {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   _id: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
   Username: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({ unique: true })
   email: string;
 }
 
 @ObjectType()
 export class LoginUserResponseR {
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   user: User;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   authToken: string;
 }
 
 export type UserDocument = User & Document;
 export const UserSchema = SchemaFactory.createForClass(User);
-
-// import { ObjectType, Field } from '@nestjs/graphql';
-// import { Document, Schema as MongooSchema } from 'mongoose';
-// import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-// // import { Book } from '../../book/entities/book.entity';
-
-// @ObjectType()
-// @Schema()
-// export class User {
-//   @Field(() => String)
-//   _id: MongooSchema.Types.ObjectId;
-
-//   @Field(() => String)
-//   @Prop()
-//   username: string;
-
-//   @Field(() => String)
-//   @Prop({ unique: true })
-//   email: string;
-
-//   @Field(() => String)
-//   @Prop()
-//   password: string;
-
-//   @Field(() => String)
-//   @Prop()
-//   Confirm_password: string;
-// }

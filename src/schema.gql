@@ -22,11 +22,11 @@ type VideoSearch {
 }
 
 type User {
-  _id: ID!
+  _id: ID
   Username: String
-  email: String!
-  password: String!
-  confirmPassword: String!
+  email: String
+  password: String
+  confirmPassword: String
   Address: String
   Age: String
   Bio: String
@@ -34,15 +34,15 @@ type User {
 }
 
 type UserFile {
-  _id: String!
-  Username: String!
-  email: String!
+  _id: String
+  Username: String
+  email: String
 }
 
 type UserDetails {
-  _id: String!
-  Username: String!
-  email: String!
+  _id: String
+  Username: String
+  email: String
 }
 
 type UserVideo {
