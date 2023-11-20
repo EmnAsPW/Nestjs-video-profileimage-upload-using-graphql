@@ -62,10 +62,10 @@ type LoginUserResponse {
 }
 
 type Query {
-  getAllvideos: [Video!]!
-  getVideoByTitlewithtags(data: VideoInput!): [VideoSearch!]!
+  getAllvideos(page: Int! = 1, perPage: Int! = 12): [Video!]!
+  getVideoByTitlewithtags(data: VideoInput!, page: Int! = 1, perPage: Int! = 12): [VideoSearch!]!
   getUser(id: String!): UserDetails!
-  getUserwithvideo(id: String!): UserVideo!
+  getUserwithvideo(id: String!, page: Int! = 1, perPage: Int! = 12): UserVideo!
 }
 
 input VideoInput {

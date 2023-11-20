@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { User, UserDetails, UserDocument } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -20,8 +20,12 @@ export class UserResolver {
   }
 
   @Query(() => UserVideo, { name: 'getUserwithvideo' })
-  async getUserwithvideo(@Args('id') id: string) {
-    return this.userService.findByIdWithVideos(id);
+  async getUserwithvideo(
+    @Args('id') id: string,
+    @Args('page', { type: () => Int, defaultValue: 1 }) page: number,
+    @Args('perPage', { type: () => Int, defaultValue: 12 }) perPage: number,
+  ) {
+    return this.userService.findByIdWithVideos(id, page, perPage);
   }
 
   @Mutation(() => User, { name: 'updateUser' })

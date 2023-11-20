@@ -48,9 +48,17 @@ export class VideoService {
     });
   }
 
-  async findAllVideos(): Promise<Video[]> {
-    return await this.videoModel.find({});
+  async findAllVideos(
+    page: number = 1,
+    perPage: number = 12,
+  ): Promise<Video[]> {
+    const skip = (page - 1) * perPage;
+    return await this.videoModel.find({}).skip(skip).limit(perPage);
   }
+
+  // async findAllVideos(): Promise<Video[]> {
+  //   return await this.videoModel.find({});
+  // }
 
   // async findVideos(data: string): Promise<Video[]> {
   //   return await this.videoModel
@@ -58,47 +66,57 @@ export class VideoService {
   //     .sort({ score: { $meta: 'textScore' } });
   // }
 
-  async findVideo(title: string, tags: string) {
+  async findVideo(
+    title: string,
+    tags: string,
+    page: number = 1,
+    perPage: number = 12,
+  ): Promise<Video[]> {
+    const skip = (page - 1) * perPage;
     try {
-      const result = await this.videoModel.aggregate([
-        {
-          $match: {
-            title: new RegExp(title, 'i'),
+      const result = await this.videoModel
+        .aggregate([
+          {
+            $match: {
+              title: new RegExp(title, 'i'),
+            },
           },
-        },
-        {
-          $unwind: {
-            path: '$tags',
-            includeArrayIndex: 'index',
-            preserveNullAndEmptyArrays: true,
+          {
+            $unwind: {
+              path: '$tags',
+              includeArrayIndex: 'index',
+              preserveNullAndEmptyArrays: true,
+            },
           },
-        },
-        {
-          $match: {
-            tags: new RegExp(tags, 'i'),
+          {
+            $match: {
+              tags: new RegExp(tags, 'i'),
+            },
           },
-        },
-        {
-          $project: {
-            searchTag: '$tags',
-            title: 1,
-            _id: 1,
-            description: 1,
-            video: 1,
-            userId: 1,
+          {
+            $project: {
+              searchTag: '$tags',
+              title: 1,
+              _id: 1,
+              description: 1,
+              video: 1,
+              userId: 1,
+            },
           },
-        },
-        {
-          $group: {
-            _id: '$_id',
-            title: { $first: '$title' },
-            description: { $first: '$description' },
-            userId: { $first: '$userId' },
-            searchTag: { $first: '$searchTag' },
-            video: { $first: '$video' },
+          {
+            $group: {
+              _id: '$_id',
+              title: { $first: '$title' },
+              description: { $first: '$description' },
+              userId: { $first: '$userId' },
+              searchTag: { $first: '$searchTag' },
+              video: { $first: '$video' },
+            },
           },
-        },
-      ]);
+        ])
+
+        .skip(skip)
+        .limit(perPage);
 
       if (result.length === 0) {
         throw new Error('No matching videos found.');

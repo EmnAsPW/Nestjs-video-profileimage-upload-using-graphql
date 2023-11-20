@@ -1,5 +1,13 @@
 import { FileUpload } from 'graphql-upload';
-import { Resolver, Query, Mutation, Args, ID, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  Context,
+  Int,
+} from '@nestjs/graphql';
 import { createWriteStream } from 'fs';
 import { GraphQLUpload } from 'graphql-upload';
 import { VideoService } from './video.service';
@@ -18,9 +26,17 @@ export class VideoResolver {
   constructor(private readonly videoService: VideoService) {}
 
   @Query(() => [Video], { name: 'getAllvideos' })
-  async getAllvideos() {
-    return this.videoService.findAllVideos();
+  async getAllvideos(
+    @Args('page', { type: () => Int, defaultValue: 1 }) page: number,
+    @Args('perPage', { type: () => Int, defaultValue: 12 }) perPage: number,
+  ) {
+    return this.videoService.findAllVideos(page, perPage);
   }
+
+  // @Query(() => [Video], { name: 'getAllvideos' })
+  // async getAllvideos() {
+  //   return this.videoService.findAllVideos();
+  // }
 
   // @Query(() => [Video])
   // async getvideobytitle(@Args('data') data: string): Promise<Video[]> {
@@ -30,10 +46,20 @@ export class VideoResolver {
   @Query(() => [VideoSearch], { name: 'getVideoByTitlewithtags' })
   async getVideoByTitlewithtags(
     @Args('data', { type: () => VideoInput }) data: VideoInput,
+    @Args('page', { type: () => Int, defaultValue: 1 }) page: number,
+    @Args('perPage', { type: () => Int, defaultValue: 12 }) perPage: number,
   ): Promise<Video[]> {
     const { title, tags } = data;
-    return this.videoService.findVideo(title, tags);
+    return this.videoService.findVideo(title, tags, page, perPage);
   }
+
+  // @Query(() => [VideoSearch], { name: 'getVideoByTitlewithtags' })
+  // async getVideoByTitlewithtags(
+  //   @Args('data', { type: () => VideoInput }) data: VideoInput,
+  // ): Promise<Video[]> {
+  //   const { title, tags } = data;
+  //   return this.videoService.findVideo(title, tags);
+  // }
 
   @Mutation(() => Video)
   @UseGuards(JwtAuthGuard)

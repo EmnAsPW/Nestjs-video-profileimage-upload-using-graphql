@@ -21,7 +21,8 @@ export class UserService {
     };
   }
 
-  async findByIdWithVideos(id: string) {
+  async findByIdWithVideos(id: string, page: number = 1, perPage: number = 12) {
+    const skip = (page - 1) * perPage;
     const userWithVideos = await this.userModel.aggregate([
       {
         $match: { _id: new Types.ObjectId(id) },
@@ -34,8 +35,14 @@ export class UserService {
           as: 'videos',
         },
       },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: perPage,
+      },
     ]);
-    console.log('............', userWithVideos);
+    //console.log('............', userWithVideos);
     return userWithVideos[0];
   }
 
