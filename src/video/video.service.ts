@@ -29,7 +29,7 @@ export class VideoService {
     }
 
     const ReadStream = createReadStream();
-    console.log(__dirname);
+    //console.log(__dirname);
     const newFilename = `${Date.now()}-${filename}`;
     let savePath = join(__dirname, '..', '..', 'upload', newFilename);
     console.log(savePath);
