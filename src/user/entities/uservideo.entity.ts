@@ -9,7 +9,7 @@ export class UserVideo {
   _id?: string;
 
   @Field(() => String, { nullable: true })
-  username: string;
+  Username: string;
 
   @Field(() => String)
   email: string;

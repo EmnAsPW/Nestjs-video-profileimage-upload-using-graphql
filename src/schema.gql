@@ -47,7 +47,7 @@ type UserDetails {
 
 type UserVideo {
   _id: ID!
-  username: String
+  Username: String
   email: String!
   Address: String
   Age: Float
